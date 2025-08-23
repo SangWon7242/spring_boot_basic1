@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 @Controller // 스프링부트에게 해당 클래스는 컨트롤러라고 명시
 public class HomeController {
   private int id;
@@ -67,7 +72,7 @@ public class HomeController {
     req.setAttribute("a", a);
     req.setAttribute("b", b);
     */
-    
+
     // @RequestParam(defaultValue = "0") : 매개변수에 기본값을 부여
     // 기본값을 부여하지 않는 경우에 생략 가능하다.
     return a + b;
@@ -77,5 +82,75 @@ public class HomeController {
   @ResponseBody
   public int showPlus2(@PathVariable int a, @PathVariable int b) {
     return a + b;
+  }
+
+  @GetMapping("/home/returnBoolean")
+  @ResponseBody
+  public boolean showReturnBoolean() {
+    return true;
+  }
+
+  @GetMapping("/home/returnDouble")
+  @ResponseBody
+  public double showReturnDouble() {
+    return Math.PI;
+  }
+
+  @GetMapping("/home/returnArray")
+  @ResponseBody
+  public int[] showReturnArray() {
+    int[] arr = {10, 20, 30, 40, 50};
+    return arr;
+  }
+
+  @GetMapping("/home/returnList")
+  @ResponseBody
+  public List<Integer> showReturnList() {
+    // List<Integer> list = List.of(10, 20, 30, 40, 50);
+
+    /*
+    List<Integer> list = new ArrayList<>(){{
+      add(10);
+      add(20);
+      add(30);
+      add(40);
+      add(50);
+    }};
+    */
+
+    List<Integer> list = new ArrayList<>();
+    list.add(10);
+    list.add(20);
+    list.add(30);
+    list.add(40);
+    list.add(50);
+
+    return list;
+  }
+
+  @GetMapping("/home/returnMap")
+  @ResponseBody
+  public Map<String, Object> showReturnMap() {
+    /*
+    Map<String, Object> map = Map.of(
+        "name", "홍길동",
+        "age", 30,
+        "address", "서울시",
+        "phone", "010-1234-5678",
+        "email", "user1@test.com",
+        "hobbies", List.of("독서", "수영", "요리")
+    );
+    */
+
+    Map<String, Object> map = new LinkedHashMap<>() {{
+      put("name", "홍길동");
+      put("age", 30);
+      put("address", "서울시");
+      put("phone", "010-1234-5678");
+      put("email", "user1@test.com");
+      put("hobbies", List.of("독서", "수영", "요리"));
+    }};
+
+    return map;
   }
 }
