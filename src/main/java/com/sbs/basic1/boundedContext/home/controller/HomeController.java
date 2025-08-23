@@ -1,14 +1,11 @@
 package com.sbs.basic1.boundedContext.home.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
@@ -19,9 +16,11 @@ import java.util.Map;
 @Controller // 스프링부트에게 해당 클래스는 컨트롤러라고 명시
 public class HomeController {
   private int id;
+  List<Person> personList;
 
   public HomeController() {
     id = -1;
+    personList = new ArrayList<>();
   }
 
 
@@ -244,6 +243,20 @@ public class HomeController {
 
     return memberList;
   }
+
+  @GetMapping("/home/addPerson")
+  @ResponseBody
+  public String addPerson(String name, int age) {
+    Person person = new Person(age, name);
+    personList.add(person);
+    return "%d번 사람이 추가되었습니다.".formatted(person.getId());
+  }
+
+  @GetMapping("/home/showPeople")
+  @ResponseBody
+  public List<Person> showPeople() {
+    return personList;
+  }
 }
 
 class Member {
@@ -334,4 +347,22 @@ class Member2 {
   private String phone;
   private String email;
   private List<String> hobbies;
+}
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+class Person {
+  private static int lastId;
+  private int id;
+  private int age;
+  private String name;
+
+  static {
+    lastId = 0;
+  }
+
+  public Person(int age, String name) {
+    this(++lastId, age, name);
+  }
 }
