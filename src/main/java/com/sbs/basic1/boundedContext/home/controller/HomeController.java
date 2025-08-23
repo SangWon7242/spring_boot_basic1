@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -69,6 +70,12 @@ public class HomeController {
     
     // @RequestParam(defaultValue = "0") : 매개변수에 기본값을 부여
     // 기본값을 부여하지 않는 경우에 생략 가능하다.
+    return a + b;
+  }
+
+  @GetMapping("/home/plus2/{a}/{b}")
+  @ResponseBody
+  public int showPlus2(@PathVariable int a, @PathVariable int b) {
     return a + b;
   }
 }
