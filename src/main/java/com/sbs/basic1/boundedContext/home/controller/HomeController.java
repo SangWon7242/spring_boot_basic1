@@ -301,6 +301,36 @@ public class HomeController {
     return "%d번 사람이 삭제되었습니다.".formatted(id);
   }
 
+  @GetMapping("/home/modifyPerson")
+  @ResponseBody
+  public String modifyPerson(int id, String name, int age) {
+    /*
+    // v1
+    Person foundPerson = null;
+
+    for(Person person : personList) {
+      if(person.getId() == id) {
+        foundPerson = person;
+        break;
+      }
+    }
+
+    if(foundPerson == null) return "%d번 사람은 존재하지 않습니다.".formatted(id);
+    */
+
+    Person person = personList.stream()
+        .filter(p -> p.getId() == id)
+        .findFirst()
+        .orElse(null);
+
+    if(person == null) return "%d번 사람은 존재하지 않습니다.".formatted(id);
+
+    person.setName(name);
+    person.setAge(age);
+
+    return "%d번 사람이 수정되었습니다.".formatted(id);
+  }
+
   @GetMapping("/home/showPeople")
   @ResponseBody
   public List<Person> showPeople() {
