@@ -1,7 +1,10 @@
 package com.sbs.basic1.boundedContext.home.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller // 스프링부트에게 해당 클래스는 컨트롤러라고 명시
@@ -50,5 +53,22 @@ public class HomeController {
   public int showInitNumber() {
     id = 0;
     return id;
+  }
+
+  @GetMapping("/home/plus")
+  @ResponseBody
+  public int showPlus(int a, int b) {
+    /*
+    // 서블릿 방식
+    int a = Integer.parseInt(req.getParameter("a"));
+    int b = Integer.parseInt(req.getParameter("b"));
+
+    req.setAttribute("a", a);
+    req.setAttribute("b", b);
+    */
+    
+    // @RequestParam(defaultValue = "0") : 매개변수에 기본값을 부여
+    // 기본값을 부여하지 않는 경우에 생략 가능하다.
+    return a + b;
   }
 }
