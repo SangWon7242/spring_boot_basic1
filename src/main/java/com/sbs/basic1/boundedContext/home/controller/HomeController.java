@@ -2,6 +2,9 @@ package com.sbs.basic1.boundedContext.home.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -153,4 +156,182 @@ public class HomeController {
 
     return map;
   }
+
+  @GetMapping("/home/returnMember")
+  @ResponseBody
+  public Member showReturnMember() {
+    Member member = new Member(
+        "홍길동",
+        30,
+        "서울시",
+        "010-1234-5678",
+        "user1@test.com",
+        List.of("독서", "수영", "요리")
+    );
+
+    return member;
+  }
+
+  @GetMapping("/home/returnMember2")
+  @ResponseBody
+  public Member2 showReturnMember2() {
+    Member2 member = new Member2(
+        "홍길동",
+        30,
+        "서울시",
+        "010-1234-5678",
+        "user1@test.com",
+        List.of("독서", "수영", "요리")
+    );
+
+    return member;
+  }
+
+  @GetMapping("/home/returnMemberMapList")
+  @ResponseBody
+  public List<Map<String, Object>> showReturnMemberMapList() {
+    Map<String, Object> member1 = new LinkedHashMap<>() {{
+      put("name", "홍길동");
+      put("age", 30);
+      put("address", "서울시");
+      put("phone", "010-1234-5678");
+      put("email", "user1@test.com");
+      put("hobbies", List.of("독서", "수영", "요리"));
+    }};
+
+    Map<String, Object> member2 = new LinkedHashMap<>() {{
+      put("name", "홍길순");
+      put("age", 20);
+      put("address", "대전광역시");
+      put("phone", "010-1234-5678");
+      put("email", "user2@test.com");
+      put("hobbies", List.of("테니스", "배구", "볼링"));
+    }};
+
+    Map<String, Object> member3 = new LinkedHashMap<>() {{
+      put("name", "임꺽정");
+      put("age", 25);
+      put("address", "안산시");
+      put("phone", "010-1234-5678");
+      put("email", "user3@test.com");
+      put("hobbies", List.of("기타연주", "피아노연주", "바이올린연주"));
+    }};
+
+    List<Map<String, Object>> memberList = new ArrayList<>();
+    memberList.add(member1);
+    memberList.add(member2);
+    memberList.add(member3);
+
+    return memberList;
+  }
+
+  @GetMapping("/home/returnMemberList")
+  @ResponseBody
+  public List<Member2> showReturnMemberList() {
+    List<Member2> memberList = new ArrayList<>();
+    memberList.add(
+        new Member2(
+            "홍길동",
+            30,
+            "서울시",
+            "010-1234-5678",
+            "user1@test.com",
+            List.of("독서", "수영", "요리"))
+    );
+
+    memberList.add(new Member2("홍길순", 20, "대전광역시", "010-1234-5678", "user2@test.com", List.of("테니스", "배구", "볼링")));
+    memberList.add(new Member2("임꺽정", 25, "안산시", "010-1234-5678", "user3@test.com", List.of("기타연주", "피아노연주", "바이올린연주")));
+
+    return memberList;
+  }
+}
+
+class Member {
+  private String name;
+  private int age;
+  private String address;
+  private String phone;
+  private String email;
+  private List<String> hobbies;
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public int getAge() {
+    return age;
+  }
+
+  public void setAge(int age) {
+    this.age = age;
+  }
+
+  public String getAddress() {
+    return address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
+  }
+
+  public String getPhone() {
+    return phone;
+  }
+
+  public void setPhone(String phone) {
+    this.phone = phone;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public List<String> getHobbies() {
+    return hobbies;
+  }
+
+  public void setHobbies(List<String> hobbies) {
+    this.hobbies = hobbies;
+  }
+
+  public Member(String name, int age, String address, String phone, String email, List<String> hobbies) {
+    this.name = name;
+    this.age = age;
+    this.address = address;
+    this.phone = phone;
+    this.email = email;
+    this.hobbies = hobbies;
+  }
+
+  @Override
+  public String toString() {
+    return "Member{" +
+        "name='" + name + '\'' +
+        ", age=" + age +
+        ", address='" + address + '\'' +
+        ", phone='" + phone + '\'' +
+        ", email='" + email + '\'' +
+        ", hobbies=" + hobbies +
+        '}';
+  }
+}
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+class Member2 {
+  private String name;
+  private int age;
+  private String address;
+  private String phone;
+  private String email;
+  private List<String> hobbies;
 }
