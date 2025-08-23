@@ -244,12 +244,61 @@ public class HomeController {
     return memberList;
   }
 
+  @GetMapping("/home/makePersonData")
+  @ResponseBody
+  public String makePersonData() {
+    personList.add(new Person(11, "홍길동"));
+    personList.add(new Person(22, "홍길순"));
+    personList.add(new Person(33, "임꺽정"));
+    return "사람 테스트 데이터 생성";
+  }
+
   @GetMapping("/home/addPerson")
   @ResponseBody
   public String addPerson(String name, int age) {
     Person person = new Person(age, name);
     personList.add(person);
     return "%d번 사람이 추가되었습니다.".formatted(person.getId());
+  }
+
+  @GetMapping("/home/removePerson")
+  @ResponseBody
+  public String removePerson(int id) {
+    /*
+    // v1
+    Person foundPerson = null;
+
+    for(Person person : personList) {
+      if(person.getId() == id) {
+        foundPerson = person;
+        break;
+      }
+    }
+
+    if(foundPerson == null) return "%d번 사람은 존재하지 않습니다.".formatted(id);
+
+    personList.remove(foundPerson);
+    */
+
+    // v2
+    /*
+    Person person = personList.stream()
+        .filter(p -> p.getId() == id)
+        .findFirst()
+        .orElse(null);
+
+    if(person == null) return "%d번 사람은 존재하지 않습니다.".formatted(id);
+
+    personList.remove(person);
+    */
+
+    // v3
+    // 삭제 성공시 true를 반환, 실패시 false를 반환
+    boolean removed = personList.removeIf(p -> p.getId() == id);
+
+    if(!removed) return "%d번 사람은 존재하지 않습니다.".formatted(id);
+
+    return "%d번 사람이 삭제되었습니다.".formatted(id);
   }
 
   @GetMapping("/home/showPeople")
