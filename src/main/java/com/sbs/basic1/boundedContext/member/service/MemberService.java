@@ -5,6 +5,8 @@ import com.sbs.basic1.boundedContext.member.repository.MemberRepository;
 import com.sbs.basic1.gloabal.base.rsData.RsData;
 import org.springframework.stereotype.Service;
 
+// @Component : Ioc 컨테이너에 의해 생사소멸이 관리된다.
+// @Service : @Component와 같은 의미, 가독생 때문에 이렇게 표기
 @Service
 public class MemberService {
   private MemberRepository memberRepository;
@@ -13,8 +15,12 @@ public class MemberService {
     memberRepository = new MemberRepository();
   }
 
+  public Member findByUsername(String username) {
+    return memberRepository.findByUsername(username);
+  }
+
   public RsData tryLogin(String username, String password) {
-    Member member = memberRepository.findByUsername(username);
+    Member member = findByUsername(username);
 
     if(member == null) {
       return RsData.of("F-4", "%s(은)는 존재하지 않는 회원입니다.".formatted(username));

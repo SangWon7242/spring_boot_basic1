@@ -1,12 +1,14 @@
 package com.sbs.basic1.boundedContext.home.controller;
 
+import com.sbs.basic1.boundedContext.member.entity.Member;
+import com.sbs.basic1.boundedContext.member.service.MemberService;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +20,11 @@ import java.util.*;
 @Controller // 스프링부트에게 해당 클래스는 컨트롤러라고 명시
 public class HomeController {
   private int id;
-  List<Person> personList;
+  private List<Person> personList;
+  
+  // 필드 주입
+  @Autowired // IOC 컨테이너에 의해 객체 생성이 자동으로 이루어진다.
+  private MemberService memberService;
 
   public HomeController() {
     id = -1;
@@ -367,6 +373,12 @@ public class HomeController {
   public void showReqAndResp(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     int age = Integer.parseInt(req.getParameter("age"));
     resp.getWriter().append("I'm %d years old\n".formatted(age));
+  }
+
+  @GetMapping("/home/user1")
+  @ResponseBody
+  public Member showUser() {
+    return memberService.findByUsername("user1");
   }
 }
 
