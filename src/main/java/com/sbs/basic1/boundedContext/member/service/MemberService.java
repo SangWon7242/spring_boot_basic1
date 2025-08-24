@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 // @Service : @Component와 같은 의미, 가독생 때문에 이렇게 표기
 @Service
 public class MemberService {
-  private MemberRepository memberRepository;
+  private final MemberRepository memberRepository;
 
-  public MemberService() {
-    memberRepository = new MemberRepository();
+  public MemberService(MemberRepository memberRepository) {
+    this.memberRepository = memberRepository;
   }
 
   public Member findByUsername(String username) {
@@ -30,6 +30,10 @@ public class MemberService {
       return RsData.of("F-3", "비밀번호가 일치하지 않습니다.");
     }
 
-    return RsData.of("S-1", "%s님 환영합니다.".formatted(username));
+    return RsData.of("S-1", "%s님 환영합니다.".formatted(username), member.getId());
+  }
+
+  public Member findById(long id) {
+    return memberRepository.findById(id);
   }
 }
