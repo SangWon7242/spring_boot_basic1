@@ -160,8 +160,8 @@ public class HomeController {
 
   @GetMapping("/home/returnMember")
   @ResponseBody
-  public Member showReturnMember() {
-    Member member = new Member(
+  public Member1 showReturnMember() {
+    Member1 member = new Member1 (
         "홍길동",
         30,
         "서울시",
@@ -370,7 +370,7 @@ public class HomeController {
   }
 }
 
-class Member {
+class Member1 {
   private String name;
   private int age;
   private String address;
@@ -426,7 +426,7 @@ class Member {
     this.hobbies = hobbies;
   }
 
-  public Member(String name, int age, String address, String phone, String email, List<String> hobbies) {
+  public Member1(String name, int age, String address, String phone, String email, List<String> hobbies) {
     this.name = name;
     this.age = age;
     this.address = address;

@@ -7,9 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 @Controller
 @RequestMapping("/member")
 public class MemberController {
@@ -22,6 +19,14 @@ public class MemberController {
   @GetMapping("/login")
   @ResponseBody
   public RsData login(String username, String password) {
+    if(username == null || username.trim().isEmpty()) {
+      return RsData.of("F-1", "아이디를 입력해주세요.");
+    }
+
+    if(password == null || password.trim().isEmpty()) {
+      return RsData.of("F-2", "비밀번호를 입력해주세요.");
+    }
+
     return memberService.tryLogin(username, password);
   }
 }
