@@ -1,5 +1,9 @@
 package com.sbs.basic1.boundedContext.home.controller;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,10 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 
 @Controller // 스프링부트에게 해당 클래스는 컨트롤러라고 명시
 public class HomeController {
@@ -296,7 +298,7 @@ public class HomeController {
     // 삭제 성공시 true를 반환, 실패시 false를 반환
     boolean removed = personList.removeIf(p -> p.getId() == id);
 
-    if(!removed) return "%d번 사람은 존재하지 않습니다.".formatted(id);
+    if (!removed) return "%d번 사람은 존재하지 않습니다.".formatted(id);
 
     return "%d번 사람이 삭제되었습니다.".formatted(id);
   }
@@ -323,7 +325,7 @@ public class HomeController {
         .findFirst()
         .orElse(null);
 
-    if(person == null) return "%d번 사람은 존재하지 않습니다.".formatted(id);
+    if (person == null) return "%d번 사람은 존재하지 않습니다.".formatted(id);
 
     person.setName(name);
     person.setAge(age);
@@ -335,6 +337,36 @@ public class HomeController {
   @ResponseBody
   public List<Person> showPeople() {
     return personList;
+  }
+
+  @GetMapping("/home/cookie/increase")
+  @ResponseBody
+  public int showCookieIncrease(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+
+    // 최초의 한번은 쿠키가 존재하지 않는다.
+    int countInCookie = 0;
+
+    if(req.getCookies() != null) {
+      countInCookie = Arrays.stream(req.getCookies()) // 쿠키 배열을 스트림으로 변환
+          .filter(cookie -> cookie.getName().equals("count")) // 쿠키 이름이 "count"인 쿠키만 필터링
+          .map(cookie -> cookie.getValue()) // 쿠키의 값을 가져옴
+          .mapToInt(Integer::parseInt) // 가져온 쿠키값(문자열)을 정수로 형 변환
+          .findFirst() // 필터링 된 쿠키 중에 첫 번째거를 찾음
+          .orElse(0); // 만약 찾지 못하면 기본값 0을 반환
+    }
+
+    int newCountInCookie = countInCookie + 1;
+
+    resp.addCookie(new Cookie("count", newCountInCookie + ""));
+
+    return newCountInCookie;
+  }
+
+  @GetMapping("/home/reqAndResp")
+  @ResponseBody
+  public void showReqAndResp(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    int age = Integer.parseInt(req.getParameter("age"));
+    resp.getWriter().append("I'm %d years old\n".formatted(age));
   }
 }
 
