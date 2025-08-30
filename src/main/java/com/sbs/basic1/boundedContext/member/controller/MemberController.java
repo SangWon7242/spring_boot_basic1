@@ -21,24 +21,8 @@ public class MemberController {
   private final Rq rq;
 
   @GetMapping("/login")
-  @ResponseBody
-  public RsData login(String username, String password) {
-    if(username == null || username.trim().isEmpty()) {
-      return RsData.of("F-1", "아이디를 입력해주세요.");
-    }
-
-    if(password == null || password.trim().isEmpty()) {
-      return RsData.of("F-2", "비밀번호를 입력해주세요.");
-    }
-
-    RsData rsData = memberService.tryLogin(username, password);
-
-    if(rsData.isSuccess()) {
-      Member member = (Member) rsData.getData();
-      rq.setSession("loginedMemberId", member.getId());
-    }
-
-    return rsData;
+  public String showLogin() {
+    return "member/login";
   }
 
   @GetMapping("/logout")
