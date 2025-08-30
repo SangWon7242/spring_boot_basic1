@@ -137,4 +137,8 @@ public class Rq {
 
     return debug.toString();
   }
+
+  public long getLoginedMember() {
+    return getSessionAsLong("loginedMemberId", 0);
+  }
 }
