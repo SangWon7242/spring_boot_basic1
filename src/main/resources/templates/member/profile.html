@@ -1,6 +1,15 @@
 <h1>내 정보</h1>
 
-<div>
-  회원번호 : [[${member.id}]]
+<div th:if="${member != null}">
+  <div>
+    회원번호 : [[${member.id}]]
+  </div>
+  <div>
+    <span>아이디 : </span>
+    <span th:text="${member.username}"></span>
+  </div>
 </div>
-<div th:text="${member.username}"></div>
+
+<div th:if="${member == null}">
+  <span>로그인 후 이용해주세요.</span>
+</div>
